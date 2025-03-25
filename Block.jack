@@ -1,0 +1,61 @@
+class Block {
+    field int x;
+    field int y;
+    field int width, height;
+    field int direction;
+
+    constructor Block new(int _x, int _y, int _direction, int _width, int _height){
+        let x = _x;
+        let y = _y;
+        let width = _width;
+        let height = _height;
+        let direction = _direction;
+        return this;
+    }
+
+    method void draw(){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x, y, x + width, y + height);
+        do Sys.wait(2);
+        return;
+    }
+
+    method void erase(){
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x, y, x + width, y + height);
+        return;
+    }
+
+    method void move(){
+        if (x = (511 - width)){
+            let direction = -1;
+        }
+
+        if (x = 0){
+            let direction = 1;
+        }
+
+        do Screen.setColor(false);
+        if (direction = 1){    
+            do Screen.drawRectangle(x, y, x, y + height);
+        }
+        else {
+            do Screen.drawRectangle(x + width - 1, y, x + width, y + height);
+        }
+        let x = x + direction;
+        return;
+    }
+
+    method void moveDown(){
+        let y = y + height;
+        return;
+    }
+
+    method int getX(){
+        return x;
+    }
+
+    method int getY(){
+        return y;
+    }
+}
