@@ -26,9 +26,13 @@ push this 1
 push this 0
 push this 2
 add
+push constant 1
+sub
 push this 1
 push this 3
 add
+push constant 1
+sub
 call Screen.drawRectangle 4
 pop temp 0
 push constant 2
@@ -47,14 +51,18 @@ push this 1
 push this 0
 push this 2
 add
+push constant 1
+sub
 push this 1
 push this 3
 add
+push constant 1
+sub
 call Screen.drawRectangle 4
 pop temp 0
 push constant 0
 return
-function Block.move 0
+function Block.moveX 0
 push argument 0
 pop pointer 0
 push this 0
@@ -78,25 +86,29 @@ label IF_TRUE1
 push constant 1
 pop this 4
 label IF_FALSE1
-push constant 0
-call Screen.setColor 1
-pop temp 0
 push this 4
 push constant 1
 eq
 if-goto IF_TRUE2
 goto IF_FALSE2
 label IF_TRUE2
+push constant 0
+call Screen.setColor 1
+pop temp 0
 push this 0
 push this 1
 push this 0
 push this 1
 push this 3
 add
-call Screen.drawRectangle 4
+push constant 1
+sub
+call Screen.drawLine 4
 pop temp 0
-goto IF_END2
-label IF_FALSE2
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
 push this 0
 push this 2
 add
@@ -106,10 +118,55 @@ push this 1
 push this 0
 push this 2
 add
+push constant 1
+sub
 push this 1
 push this 3
 add
-call Screen.drawRectangle 4
+push constant 1
+sub
+call Screen.drawLine 4
+pop temp 0
+goto IF_END2
+label IF_FALSE2
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawLine 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
+push this 0
+push constant 1
+sub
+push this 1
+push this 0
+push constant 1
+sub
+push this 1
+push this 3
+add
+push constant 1
+sub
+call Screen.drawLine 4
 pop temp 0
 label IF_END2
 push this 0
@@ -118,11 +175,51 @@ add
 pop this 0
 push constant 0
 return
-function Block.moveDown 0
+function Block.moveY 0
 push argument 0
 pop pointer 0
+push constant 0
+call Screen.setColor 1
+pop temp 0
+push this 0
+push this 1
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+call Screen.drawLine 4
+pop temp 0
+push constant 0
+not
+call Screen.setColor 1
+pop temp 0
 push this 1
 push this 3
+add
+push constant 256
+lt
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push this 0
+push this 1
+push this 3
+add
+push this 0
+push this 2
+add
+push constant 1
+sub
+push this 1
+push this 3
+add
+call Screen.drawLine 4
+pop temp 0
+label IF_FALSE0
+push this 1
+push constant 1
 add
 pop this 1
 push constant 0
@@ -136,4 +233,14 @@ function Block.getY 0
 push argument 0
 pop pointer 0
 push this 1
+return
+function Block.getWidth 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Block.getHeight 0
+push argument 0
+pop pointer 0
+push this 3
 return

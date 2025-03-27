@@ -2,52 +2,63 @@ class Block {
     field int x;
     field int y;
     field int width, height;
-    field int direction;
+    field int dx;
 
-    constructor Block new(int _x, int _y, int _direction, int _width, int _height){
+    constructor Block new(int _x, int _y, int _dx, int _width, int _height){
         let x = _x;
         let y = _y;
         let width = _width;
         let height = _height;
-        let direction = _direction;
+        let dx = _dx;
         return this;
     }
 
     method void draw(){
         do Screen.setColor(true);
-        do Screen.drawRectangle(x, y, x + width, y + height);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
         do Sys.wait(2);
         return;
     }
 
     method void erase(){
         do Screen.setColor(false);
-        do Screen.drawRectangle(x, y, x + width, y + height);
+        do Screen.drawRectangle(x, y, x + width - 1, y + height - 1);
         return;
     }
 
-    method void move(){
+    method void moveX(){
         if (x = (511 - width)){
-            let direction = -1;
+            let dx = -1;
         }
 
         if (x = 0){
-            let direction = 1;
+            let dx = 1;
         }
 
-        do Screen.setColor(false);
-        if (direction = 1){    
-            do Screen.drawRectangle(x, y, x, y + height);
+        if (dx = 1){
+            do Screen.setColor(false);    
+            do Screen.drawLine(x, y, x, y + height - 1);
+            do Screen.setColor(true);
+            do Screen.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
         }
         else {
-            do Screen.drawRectangle(x + width - 1, y, x + width, y + height);
+            do Screen.setColor(false);
+            do Screen.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
+            do Screen.setColor(true);
+            do Screen.drawLine(x - 1, y, x - 1, y + height - 1);
         }
-        let x = x + direction;
+        let x = x + dx;
         return;
     }
 
-    method void moveDown(){
-        let y = y + height;
+    method void moveY(){
+        do Screen.setColor(false);
+        do Screen.drawLine(x, y, x + width - 1, y);
+        do Screen.setColor(true);
+        if(y + height < 256){
+            do Screen.drawLine(x, y + height, x + width - 1, y + height); 
+        }
+        let y = y + 1;
         return;
     }
 
@@ -57,5 +68,13 @@ class Block {
 
     method int getY(){
         return y;
+    }
+
+    method int getWidth(){
+        return width;
+    }
+
+    method int getHeight(){
+        return height;
     }
 }

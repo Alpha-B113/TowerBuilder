@@ -1,60 +1,48 @@
 class TowerGame {
     static int blockWidth;
     static int blockHeight;
-    static int thresholdCount;
-    static Array blocks;
+    static Tower tower;
     static int currentY;
-    static int index;
     static int score;
-
 
     function void run() {
         var Block block;
         let blockWidth = 250;
-        let blockHeight = 20;
-        let thresholdCount = 128 / blockHeight + 1;
-        let blocks = Array.new(thresholdCount);
-        let currentY = 255 - blockHeight;
-
-        do TowerGame.createNewBlock();
-        do TowerGame.printScore();
-
+        let blockHeight = 25;
+        let tower = Tower.new(128 / blockHeight + 1);
+        let currentY = 256 - blockHeight;
+        
         while(true) {
-            let block = blocks[index];
-            do block.move();
-            do block.draw();
-            do TowerGame.printScore(); 
+            if(block = null){
+                let block = TowerGame.createNewBlock();
+                do block.draw();
+            }
 
+            do block.moveX();
+            do TowerGame.printScore(); 
             if (Keyboard.keyPressed() = 32){
-                do TowerGame.putBlock();
-                do TowerGame.createNewBlock();
+                do tower.putBlock(block);
+                let score = score + 1;
+                if(score < tower.getThresholdCount()){
+                    let currentY = currentY - blockHeight;
+                }
+                let block = null;
                 do Sys.wait(200);
             }
+            do Sys.wait(2);
         }
         return;
     }
 
-
-    function void createNewBlock(){
+    function Block createNewBlock(){
         if ((score / 2 * 2) = score){
-            let blocks[index] = Block.new(0, currentY, 1, blockWidth, blockHeight);
-        } else {
-            let blocks[index] = Block.new(511 - blockWidth, currentY, -1, blockWidth, blockHeight);
+            return Block.new(0, currentY, 1, blockWidth, blockHeight);
         }
-        return;
+        return Block.new(512 - blockWidth, currentY, -1, blockWidth, blockHeight);
     }
 
-    function void putBlock(){
-        do TowerGame.reduceBlockWidth();
-        let score = score + 1;
-        
-        if (index < (thresholdCount - 1)){
-            let index = index + 1;
-            let currentY = currentY - blockHeight;
-        } else {
-            do TowerGame.moveBlocksDown();
-            do TowerGame.drawAll();    
-        }
+    function void updateWidth(int newBlockWidth){
+        let blockWidth = newBlockWidth;
         return;
     }
 
@@ -72,74 +60,6 @@ class TowerGame {
     function void printScore(){
         do Output.moveCursor(0, 0);
         do Output.printInt(score);
-        return;
-    }
-
-    function void moveBlocksDown(){
-        var int j;
-        var Block Block;
-
-        do Screen.clearScreen();
-        while(j < (thresholdCount - 1)){
-            let blocks[j] = blocks[j + 1];
-            let Block = blocks[j];
-            do Block.moveDown();
-            let j = j + 1;
-        }
-        return;
-    }
-
-    function void drawAll(){
-        var int j;
-        var Block Block;
-
-        do Screen.clearScreen();
-        while(j < (thresholdCount - 1)){
-            let Block = blocks[j];
-            do Block.draw();
-            let j = j + 1;
-        }
-        return;
-    }
-
-    function void reduceBlockWidth(){
-        var int prevLeftX, prevRightX;
-        var int currentLeftX, currentRightX;
-        var int currentLeftY;
-        var Block block;
-
-        if (index = 0){
-            return;
-        }
-
-        let block = blocks[index - 1];
-        let prevLeftX = block.getX();
-        let prevRightX = prevLeftX + blockWidth;
-
-        let block = blocks[index];
-        let currentLeftX = block.getX();
-        let currentLeftY = block.getY();
-        let currentRightX = currentLeftX + blockWidth;
-
-        if ((currentRightX < prevLeftX) | (currentLeftX > prevRightX)){
-            do TowerGame.showGameOver();
-        }
-
-        do block.erase();
-        if (((currentLeftX < prevLeftX) | (currentLeftX = prevLeftX)) 
-            & ((prevLeftX < currentRightX) | (prevLeftX = currentRightX))){
-            let blockWidth = currentRightX - prevLeftX;
-            let blocks[index] = Block.new(prevLeftX, currentLeftY, 0, blockWidth, blockHeight);
-        }
-
-        if (((currentLeftX < prevRightX) | (currentLeftX = prevRightX)) 
-            & ((prevRightX < currentRightX) | (prevRightX = currentRightX))){
-            let blockWidth = prevRightX - currentLeftX;
-            let blocks[index] = Block.new(currentLeftX, currentLeftY, 0, blockWidth, blockHeight);         
-        }
-
-        let block = blocks[index];
-        do block.draw(); 
         return;
     }
 }
