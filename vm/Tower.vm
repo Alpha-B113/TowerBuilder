@@ -233,7 +233,7 @@ add
 pop local 0
 goto WHILE_EXP1
 label WHILE_END1
-push constant 1
+push constant 3
 call Sys.wait 1
 pop temp 0
 push local 1

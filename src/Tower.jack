@@ -78,7 +78,7 @@ class Tower{
                 do block.moveY();
                 let j = j + 1;
             }
-            do Sys.wait(1);
+            do Sys.wait(3);
             let cnt = cnt + 1;        
         }
 
