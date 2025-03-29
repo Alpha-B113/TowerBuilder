@@ -70,6 +70,8 @@ push local 0
 push local 6
 call Block.getWidth 1
 add
+push constant 1
+sub
 pop local 1
 push this 2
 push this 0
@@ -87,6 +89,8 @@ push local 2
 push local 6
 call Block.getWidth 1
 add
+push constant 1
+sub
 pop local 3
 push local 3
 push local 0

@@ -34,12 +34,12 @@ class Tower{
         }
         let block = blocksInTower[index - 1];
         let prevLeftX = block.getX();
-        let prevRightX = prevLeftX + block.getWidth();
+        let prevRightX = prevLeftX + block.getWidth() - 1;
 
         let block = blocksInTower[index];
         let currentLeftX = block.getX();
         let currentLeftY = block.getY();
-        let currentRightX = currentLeftX + block.getWidth();
+        let currentRightX = currentLeftX + block.getWidth() - 1;
 
         if ((currentRightX < prevLeftX) | (currentLeftX > prevRightX)){
             do TowerBuilder.showGameOver();

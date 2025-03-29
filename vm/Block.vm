@@ -35,9 +35,6 @@ push constant 1
 sub
 call Screen.drawRectangle 4
 pop temp 0
-push constant 2
-call Sys.wait 1
-pop temp 0
 push constant 0
 return
 function Block.erase 0
