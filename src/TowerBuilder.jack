@@ -1,25 +1,30 @@
-class TowerGame {
+class TowerBuilder {
     static int blockWidth;
     static int blockHeight;
     static Tower tower;
-    static int currentY;
     static int score;
+
 
     function void run() {
         var Block block;
+        var int currentY;
         let blockWidth = 250;
         let blockHeight = 25;
         let tower = Tower.new(128 / blockHeight + 1);
         let currentY = 256 - blockHeight;
         
+        do TowerBuilder.showHint();
         while(true) {
             if(block = null){
-                let block = TowerGame.createNewBlock();
+                let block = TowerBuilder.createNewBlock(currentY);
                 do block.draw();
             }
 
             do block.moveX();
-            do TowerGame.printScore(); 
+            do TowerBuilder.printScore();
+            if (score = 2){
+                do TowerBuilder.hideHint();
+            } 
             if (Keyboard.keyPressed() = 32){
                 do tower.putBlock(block);
                 let score = score + 1;
@@ -34,7 +39,7 @@ class TowerGame {
         return;
     }
 
-    function Block createNewBlock(){
+    function Block createNewBlock(int currentY){
         if ((score / 2 * 2) = score){
             return Block.new(0, currentY, 1, blockWidth, blockHeight);
         }
@@ -43,6 +48,24 @@ class TowerGame {
 
     function void updateWidth(int newBlockWidth){
         let blockWidth = newBlockWidth;
+        return;
+    }
+
+    function void showHint(){
+        var String hint;
+        let hint = "Press space to place a block";
+        do Output.moveCursor(10, 18);
+        do Output.printString(hint);
+        do Memory.deAlloc(hint);
+        return;
+    }
+
+    function void hideHint(){
+        var String spacesLine;
+        let spacesLine = "                             ";
+        do Output.moveCursor(10, 17);
+        do Output.printString(spacesLine);
+        do Memory.deAlloc(spacesLine);
         return;
     }
 

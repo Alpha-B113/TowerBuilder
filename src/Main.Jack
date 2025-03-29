@@ -1,6 +1,6 @@
 class Main {
     function void main() {
-        do TowerGame.run();
+        do TowerBuilder.run();
         return;
     }
 }

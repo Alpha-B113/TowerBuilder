@@ -77,4 +77,9 @@ class Block {
     method int getHeight(){
         return height;
     }
+
+    method void dispose(){
+        do Memory.deAlloc(this);
+        return;
+    }
 }

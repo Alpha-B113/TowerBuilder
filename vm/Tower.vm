@@ -98,7 +98,7 @@ or
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-call TowerGame.showGameOver 0
+call TowerBuilder.showGameOver 0
 pop temp 0
 label IF_FALSE1
 push local 6
@@ -179,7 +179,7 @@ push temp 0
 pop that 0
 label IF_FALSE3
 push local 5
-call TowerGame.updateWidth 1
+call TowerBuilder.updateWidth 1
 pop temp 0
 push this 2
 push this 0
@@ -244,6 +244,15 @@ goto WHILE_EXP0
 label WHILE_END0
 push constant 0
 pop local 0
+push constant 0
+push this 0
+add
+pop pointer 1
+push that 0
+pop local 3
+push local 3
+call Block.dispose 1
+pop temp 0
 label WHILE_EXP2
 push local 0
 push this 1

@@ -42,7 +42,7 @@ class Tower{
         let currentRightX = currentLeftX + block.getWidth();
 
         if ((currentRightX < prevLeftX) | (currentLeftX > prevRightX)){
-            do TowerGame.showGameOver();
+            do TowerBuilder.showGameOver();
         }
 
         do block.erase();
@@ -58,7 +58,7 @@ class Tower{
             let blocksInTower[index] = Block.new(currentLeftX, currentLeftY, 0, newBlockWidth, block.getHeight());         
         }
 
-        do TowerGame.updateWidth(newBlockWidth);
+        do TowerBuilder.updateWidth(newBlockWidth);
         
         let block = blocksInTower[index];
         do block.draw(); 
@@ -83,6 +83,8 @@ class Tower{
         }
 
         let j = 0;
+        let block = blocksInTower[0];
+        do block.dispose();
         while(j < (thresholdCount - 1)){
             let blocksInTower[j] = blocksInTower[j + 1];
             let j = j + 1;
