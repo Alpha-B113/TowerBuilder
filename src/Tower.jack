@@ -48,13 +48,13 @@ class Tower{
         do block.erase();
         if (((currentLeftX < prevLeftX) | (currentLeftX = prevLeftX)) 
             & ((prevLeftX < currentRightX) | (prevLeftX = currentRightX))){
-            let newBlockWidth = currentRightX - prevLeftX;
+            let newBlockWidth = currentRightX - prevLeftX + 1;
             let blocksInTower[index] = Block.new(prevLeftX, currentLeftY, 0, newBlockWidth, block.getHeight());
         }
 
         if (((currentLeftX < prevRightX) | (currentLeftX = prevRightX)) 
             & ((prevRightX < currentRightX) | (prevRightX = currentRightX))){
-            let newBlockWidth = prevRightX - currentLeftX;
+            let newBlockWidth = prevRightX - currentLeftX + 1;
             let blocksInTower[index] = Block.new(currentLeftX, currentLeftY, 0, newBlockWidth, block.getHeight());         
         }
 
