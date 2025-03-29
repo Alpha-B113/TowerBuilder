@@ -1,0 +1,96 @@
+class Tower{
+    field Array blocksInTower;
+    field int thresholdCount;
+    field int index;
+    
+
+    constructor Tower new(int _thresholdCount){
+        let thresholdCount = _thresholdCount;
+        let blocksInTower = Array.new(thresholdCount);
+        return this;
+    }
+
+    method void putBlock(Block block){
+        let blocksInTower[index] = block;
+        do reduceLastBlockWidth();
+        
+        if (index < (thresholdCount - 1)){
+            let index = index + 1;
+        } else {
+            do moveDown();
+        }
+        return;
+    }
+
+    method void reduceLastBlockWidth(){
+        var int prevLeftX, prevRightX;
+        var int currentLeftX, currentRightX;
+        var int currentLeftY;
+        var int newBlockWidth;
+        var Block block;
+
+        if (index = 0){
+            return;
+        }
+        let block = blocksInTower[index - 1];
+        let prevLeftX = block.getX();
+        let prevRightX = prevLeftX + block.getWidth();
+
+        let block = blocksInTower[index];
+        let currentLeftX = block.getX();
+        let currentLeftY = block.getY();
+        let currentRightX = currentLeftX + block.getWidth();
+
+        if ((currentRightX < prevLeftX) | (currentLeftX > prevRightX)){
+            do TowerGame.showGameOver();
+        }
+
+        do block.erase();
+        if (((currentLeftX < prevLeftX) | (currentLeftX = prevLeftX)) 
+            & ((prevLeftX < currentRightX) | (prevLeftX = currentRightX))){
+            let newBlockWidth = currentRightX - prevLeftX;
+            let blocksInTower[index] = Block.new(prevLeftX, currentLeftY, 0, newBlockWidth, block.getHeight());
+        }
+
+        if (((currentLeftX < prevRightX) | (currentLeftX = prevRightX)) 
+            & ((prevRightX < currentRightX) | (prevRightX = currentRightX))){
+            let newBlockWidth = prevRightX - currentLeftX;
+            let blocksInTower[index] = Block.new(currentLeftX, currentLeftY, 0, newBlockWidth, block.getHeight());         
+        }
+
+        do TowerGame.updateWidth(newBlockWidth);
+        
+        let block = blocksInTower[index];
+        do block.draw(); 
+        return;
+    }
+
+    method void moveDown(){
+        var int j, cnt, blockHeight;
+        var Block block;
+        let block = blocksInTower[0];
+        let blockHeight = block.getHeight();
+
+        while(cnt < blockHeight){
+            let j = 0;
+            while(j < thresholdCount){
+                let block = blocksInTower[j];
+                do block.moveY();
+                let j = j + 1;
+            }
+            do Sys.wait(1);
+            let cnt = cnt + 1;        
+        }
+
+        let j = 0;
+        while(j < (thresholdCount - 1)){
+            let blocksInTower[j] = blocksInTower[j + 1];
+            let j = j + 1;
+        }
+        return;
+    }
+
+    method int getThresholdCount(){
+        return thresholdCount;
+    }
+}
