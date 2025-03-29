@@ -39,7 +39,7 @@ class Block {
             do Screen.setColor(false);    
             do Screen.drawLine(x, y, x, y + height - 1);
             do Screen.setColor(true);
-            do Screen.drawLine(x + width - 1, y, x + width - 1, y + height - 1);
+            do Screen.drawLine(x + width, y, x + width, y + height - 1);
         }
         else {
             do Screen.setColor(false);
