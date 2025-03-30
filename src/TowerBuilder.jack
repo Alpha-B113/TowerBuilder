@@ -4,7 +4,6 @@ class TowerBuilder {
     static Tower tower;
     static int score;
 
-
     function void run() {
         var Block block;
         var int currentY;
@@ -14,6 +13,7 @@ class TowerBuilder {
         let currentY = 256 - blockHeight;
         
         do TowerBuilder.showHint();
+        do TowerBuilder.printScore();
         while(true) {
             if(block = null){
                 let block = TowerBuilder.createNewBlock(currentY);
@@ -21,13 +21,13 @@ class TowerBuilder {
             }
 
             do block.moveX();
-            do TowerBuilder.printScore();
-            if (score = 2){
-                do TowerBuilder.hideHint();
-            } 
             if (Keyboard.keyPressed() = 32){
                 do tower.putBlock(block);
                 let score = score + 1;
+                do TowerBuilder.printScore();
+                if (score = 2){
+                    do TowerBuilder.hideHint();
+                }
                 if(score < tower.getThresholdCount()){
                     let currentY = currentY - blockHeight;
                 }
@@ -82,6 +82,7 @@ class TowerBuilder {
 
     function void printScore(){
         do Output.moveCursor(0, 0);
+        do Output.printString("Score: ");
         do Output.printInt(score);
         return;
     }
