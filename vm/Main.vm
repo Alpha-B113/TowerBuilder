@@ -1,5 +1,30 @@
-function Main.main 0
+function Main.main 2
+push constant 0
+not
+pop local 0
+label WHILE_EXP0
+push constant 0
+not
+not
+if-goto WHILE_END0
+push local 0
+call Keyboard.keyPressed 0
+push constant 129
+eq
+or
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push constant 0
+pop local 0
+call Screen.clearScreen 0
+pop temp 0
 call TowerBuilder.run 0
 pop temp 0
+call TowerBuilder.dispose 0
+pop temp 0
+label IF_FALSE0
+goto WHILE_EXP0
+label WHILE_END0
 push constant 0
 return

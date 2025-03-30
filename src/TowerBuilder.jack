@@ -6,35 +6,44 @@ class TowerBuilder {
 
     function void run() {
         var Block block;
+        var boolean exit;
         var int currentY;
         let blockWidth = 250;
         let blockHeight = 25;
         let tower = Tower.new(128 / blockHeight + 1);
+        let score = 0;
         let currentY = 256 - blockHeight;
         
         do TowerBuilder.showHint();
         do TowerBuilder.printScore();
-        while(true) {
+        
+        while(~exit) {
             if(block = null){
                 let block = TowerBuilder.createNewBlock(currentY);
                 do block.draw();
             }
 
             do block.moveX();
+            do Sys.wait(2);
+
             if (Keyboard.keyPressed() = 32){
                 do tower.putBlock(block);
-                let score = score + 1;
-                do TowerBuilder.printScore();
-                if (score = 2){
-                    do TowerBuilder.hideHint();
+                if (blockWidth = 0){
+                    do TowerBuilder.showGameOver();
+                    let exit = true;
+                } else {
+                    let score = score + 1;
+                    do TowerBuilder.printScore();
+                    if (score = 2){
+                        do TowerBuilder.hideHint();
+                    }
+                    if(score < tower.getThresholdCount()){
+                        let currentY = currentY - blockHeight;
+                    }
+                    let block = null;
+                    do Sys.wait(200);
                 }
-                if(score < tower.getThresholdCount()){
-                    let currentY = currentY - blockHeight;
-                }
-                let block = null;
-                do Sys.wait(200);
             }
-            do Sys.wait(2);
         }
         return;
     }
@@ -52,20 +61,14 @@ class TowerBuilder {
     }
 
     function void showHint(){
-        var String hint;
-        let hint = "Press space to place a block";
         do Output.moveCursor(10, 18);
-        do Output.printString(hint);
-        do Memory.deAlloc(hint);
+        do Output.printString("Press space to place a block");
         return;
     }
 
     function void hideHint(){
-        var String spacesLine;
-        let spacesLine = "                             ";
         do Output.moveCursor(10, 17);
-        do Output.printString(spacesLine);
-        do Memory.deAlloc(spacesLine);
+        do Output.printString("                             ");
         return;
     }
 
@@ -76,7 +79,8 @@ class TowerBuilder {
         do Output.moveCursor(11, 24);
         do Output.printString("Your score: ");
         do Output.printInt(score);
-        do Sys.halt();
+        do Output.moveCursor(13, 18);
+        do Output.printString("Press Backspace to restart");
         return;
     }
 
@@ -84,6 +88,15 @@ class TowerBuilder {
         do Output.moveCursor(0, 0);
         do Output.printString("Score: ");
         do Output.printInt(score);
+        return;
+    }
+
+    function int getBlockWidth(){
+        return blockWidth;
+    }
+
+    function void dispose(){
+        do tower.dispose();
         return;
     }
 }

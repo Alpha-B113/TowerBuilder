@@ -1,6 +1,16 @@
 class Main {
     function void main() {
-        do TowerBuilder.run();
+        var boolean isFirstLaunch;
+        var Tower tower;
+        let isFirstLaunch = true;
+        while(true){
+            if (isFirstLaunch | (Keyboard.keyPressed() = 129)){
+                let isFirstLaunch = false;
+                do Screen.clearScreen();
+                do TowerBuilder.run();
+                do TowerBuilder.dispose();
+            }
+        }
         return;
     }
 }

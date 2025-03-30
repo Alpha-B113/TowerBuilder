@@ -7,6 +7,7 @@ class Tower{
     constructor Tower new(int _thresholdCount){
         let thresholdCount = _thresholdCount;
         let blocksInTower = Array.new(thresholdCount);
+        let index = 0;
         return this;
     }
 
@@ -32,6 +33,7 @@ class Tower{
         if (index = 0){
             return;
         }
+
         let block = blocksInTower[index - 1];
         let prevLeftX = block.getX();
         let prevRightX = prevLeftX + block.getWidth() - 1;
@@ -42,10 +44,12 @@ class Tower{
         let currentRightX = currentLeftX + block.getWidth() - 1;
 
         if ((currentRightX < prevLeftX) | (currentLeftX > prevRightX)){
-            do TowerBuilder.showGameOver();
+            do TowerBuilder.updateWidth(0);
+            return;
         }
 
         do block.erase();
+        do block.dispose();
         if (((currentLeftX < prevLeftX) | (currentLeftX = prevLeftX)) 
             & ((prevLeftX < currentRightX) | (prevLeftX = currentRightX))){
             let newBlockWidth = currentRightX - prevLeftX + 1;
@@ -59,7 +63,6 @@ class Tower{
         }
 
         do TowerBuilder.updateWidth(newBlockWidth);
-        
         let block = blocksInTower[index];
         do block.draw(); 
         return;
@@ -70,6 +73,10 @@ class Tower{
         var Block block;
         let block = blocksInTower[0];
         let blockHeight = block.getHeight();
+
+        if (TowerBuilder.getBlockWidth() = 0){
+            return;
+        }
 
         while(cnt < blockHeight){
             let j = 0;
@@ -94,5 +101,10 @@ class Tower{
 
     method int getThresholdCount(){
         return thresholdCount;
+    }
+
+    method void dispose(){
+        do Memory.deAlloc(blocksInTower);
+        return;
     }
 }
