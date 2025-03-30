@@ -8,8 +8,8 @@
   - в метод reduceLastBlockWidth было бы неплохо либо добавить коментарии, либо разбить его на вспомогательные методы, так как он явно перегружен условиями
   - блоки не всегда двигаются с одинаковой скоростью
 
-  ![alt text](Cherezov_image/fast-slow.gif)
+  ![alt text](Cherezov-image/fast-slow.gif)
 
   - иногда при добавлении нового блока появляются пробелы
 
-  ![alt text](Cherezov_image/space.png)
+  ![alt text](Cherezov-image/space.png)
