@@ -2,6 +2,8 @@ function Main.main 2
 push constant 0
 not
 pop local 0
+call Text.createMessages 0
+pop temp 0
 label WHILE_EXP0
 push constant 0
 not
@@ -20,8 +22,6 @@ pop local 0
 call Screen.clearScreen 0
 pop temp 0
 call TowerBuilder.run 0
-pop temp 0
-call TowerBuilder.dispose 0
 pop temp 0
 label IF_FALSE0
 goto WHILE_EXP0
