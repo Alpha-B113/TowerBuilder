@@ -3,12 +3,13 @@ class Main {
         var boolean isFirstLaunch;
         var Tower tower;
         let isFirstLaunch = true;
+
+        do Text.createMessages();
         while(true){
             if (isFirstLaunch | (Keyboard.keyPressed() = 129)){
                 let isFirstLaunch = false;
                 do Screen.clearScreen();
                 do TowerBuilder.run();
-                do TowerBuilder.dispose();
             }
         }
         return;

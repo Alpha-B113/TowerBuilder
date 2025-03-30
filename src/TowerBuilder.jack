@@ -14,8 +14,8 @@ class TowerBuilder {
         let score = 0;
         let currentY = 256 - blockHeight;
         
-        do TowerBuilder.showHint();
-        do TowerBuilder.printScore();
+        do Text.showHint();
+        do Text.showScore(score);
         
         while(~exit) {
             if(block = null){
@@ -29,13 +29,13 @@ class TowerBuilder {
             if (Keyboard.keyPressed() = 32){
                 do tower.putBlock(block);
                 if (blockWidth = 0){
-                    do TowerBuilder.showGameOver();
+                    do Text.showGameOver(score);
                     let exit = true;
                 } else {
                     let score = score + 1;
-                    do TowerBuilder.printScore();
+                    do Text.showScore(score);
                     if (score = 2){
-                        do TowerBuilder.hideHint();
+                        do Text.hideHint();
                     }
                     if(score < tower.getThresholdCount()){
                         let currentY = currentY - blockHeight;
@@ -45,6 +45,7 @@ class TowerBuilder {
                 }
             }
         }
+        do tower.dispose();
         return;
     }
 
@@ -60,43 +61,7 @@ class TowerBuilder {
         return;
     }
 
-    function void showHint(){
-        do Output.moveCursor(10, 18);
-        do Output.printString("Press space to place a block");
-        return;
-    }
-
-    function void hideHint(){
-        do Output.moveCursor(10, 17);
-        do Output.printString("                             ");
-        return;
-    }
-
-    function void showGameOver(){
-        do Screen.clearScreen();
-        do Output.moveCursor(10, 26);
-        do Output.printString("Game Over!");
-        do Output.moveCursor(11, 24);
-        do Output.printString("Your score: ");
-        do Output.printInt(score);
-        do Output.moveCursor(13, 18);
-        do Output.printString("Press Backspace to restart");
-        return;
-    }
-
-    function void printScore(){
-        do Output.moveCursor(0, 0);
-        do Output.printString("Score: ");
-        do Output.printInt(score);
-        return;
-    }
-
     function int getBlockWidth(){
         return blockWidth;
-    }
-
-    function void dispose(){
-        do tower.dispose();
-        return;
     }
 }

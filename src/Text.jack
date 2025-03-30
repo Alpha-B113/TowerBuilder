@@ -1,0 +1,51 @@
+class Text{
+
+    static String hint;
+    static String spacedLine;
+    static String gameOver;
+    static String scoreInGame;
+    static String scoreGameOver;
+    static string restart;
+    
+    function void createMessages(){
+        let hint = "Press space to place a block";
+        let spacedLine = "                             ";
+        let gameOver = "Game Over!";
+        let scoreInGame = "Your score: ";
+        let restart = "Press Backspace to restart";
+        let scoreGameOver = "Score: ";
+        return;
+    }
+
+    function void showHint(){
+        do Output.moveCursor(10, 18);
+        do Output.printString(hint);
+        return;
+    }
+
+    function void hideHint(){
+        do Output.moveCursor(10, 17);
+        do Output.printString(spacedLine);
+        return;
+    }
+
+
+    function void showGameOver(int score){
+        do Screen.clearScreen();
+        do Output.moveCursor(10, 26);
+        do Output.printString(gameOver);
+        do Output.moveCursor(11, 24);
+        do Output.printString(scoreInGame);
+        do Output.printInt(score);
+        do Output.moveCursor(13, 18);
+        do Output.printString(restart);
+        return;
+    }
+
+    function void showScore(int score){
+        do Output.moveCursor(0, 0);
+        do Output.printString(scoreGameOver);
+        do Output.printInt(score);
+        return;
+    }
+}
