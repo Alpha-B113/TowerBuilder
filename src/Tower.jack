@@ -12,9 +12,32 @@ class Tower{
     }
 
     method void putBlock(Block block){
-        let blocksInTower[index] = block;
-        do reduceLastBlockWidth();
-        
+        var int prevLeftX, prevRightX;
+        var int currentLeftX, currentRightX;
+        var int currentLeftY;
+        var Block previousBlock, lastBlock;
+
+        if (index = 0){
+            let blocksInTower[index] = block;
+            let index = index + 1;
+            return;
+        }
+
+        let previousBlock = blocksInTower[index - 1];
+        let prevLeftX = previousBlock.getX();
+        let prevRightX = prevLeftX + previousBlock.getWidth() - 1;
+
+        let currentLeftX = block.getX();
+        let currentRightX = currentLeftX + block.getWidth() - 1;
+        let currentLeftY = block.getY();
+
+        do reduceLastBlockWidth(block, prevLeftX, prevRightX, currentLeftX, currentRightX, currentLeftY);
+        do block.erase();
+        do block.dispose();
+
+        let lastBlock = blocksInTower[index];
+        do lastBlock.draw(); 
+
         if (index < (thresholdCount - 1)){
             let index = index + 1;
         } else {
@@ -23,33 +46,12 @@ class Tower{
         return;
     }
 
-    method void reduceLastBlockWidth(){
-        var int prevLeftX, prevRightX;
-        var int currentLeftX, currentRightX;
-        var int currentLeftY;
+    method void reduceLastBlockWidth(Block block, int prevLeftX, int prevRightX, int currentLeftX, int currentRightX, int currentLeftY){
         var int newBlockWidth;
-        var Block block;
-
-        if (index = 0){
-            return;
-        }
-
-        let block = blocksInTower[index - 1];
-        let prevLeftX = block.getX();
-        let prevRightX = prevLeftX + block.getWidth() - 1;
-
-        let block = blocksInTower[index];
-        let currentLeftX = block.getX();
-        let currentLeftY = block.getY();
-        let currentRightX = currentLeftX + block.getWidth() - 1;
-
         if ((currentRightX < prevLeftX) | (currentLeftX > prevRightX)){
-            do TowerBuilder.updateWidth(0);
-            return;
+            let newBlockWidth = 0;
         }
 
-        do block.erase();
-        do block.dispose();
         if (((currentLeftX < prevLeftX) | (currentLeftX = prevLeftX)) 
             & ((prevLeftX < currentRightX) | (prevLeftX = currentRightX))){
             let newBlockWidth = currentRightX - prevLeftX + 1;
@@ -59,12 +61,9 @@ class Tower{
         if (((currentLeftX < prevRightX) | (currentLeftX = prevRightX)) 
             & ((prevRightX < currentRightX) | (prevRightX = currentRightX))){
             let newBlockWidth = prevRightX - currentLeftX + 1;
-            let blocksInTower[index] = Block.new(currentLeftX, currentLeftY, 0, newBlockWidth, block.getHeight());         
+            let blocksInTower[index] = Block.new(currentLeftX, currentLeftY, 0, newBlockWidth, block.getHeight()); 
         }
-
         do TowerBuilder.updateWidth(newBlockWidth);
-        let block = blocksInTower[index];
-        do block.draw(); 
         return;
     }
 
