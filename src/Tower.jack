@@ -1,7 +1,7 @@
 class Tower{
-    field Array blocksInTower;
-    field int thresholdCount;
-    field int index;
+    field Array blocksInTower; // количество блоков в башне
+    field int thresholdCount; // максимальное возможное количество блоков башни на экране
+    field int index; // индекс текущего блока
     
 
     constructor Tower new(int _thresholdCount){
@@ -17,27 +17,36 @@ class Tower{
         var int currentLeftY;
         var Block previousBlock, lastBlock;
 
+        // если был поставлен самый первый блок, то уменьшать ширину и сдвигать башню не надо
+        // поэтому просто добавляем его в blocksInTower
         if (index = 0){
             let blocksInTower[index] = block;
             let index = index + 1;
             return;
         }
 
+        // получаем координаты углов по оси X предыдущего блока
         let previousBlock = blocksInTower[index - 1];
         let prevLeftX = previousBlock.getX();
         let prevRightX = prevLeftX + previousBlock.getWidth() - 1;
 
+        // получаем координаты углов текущего блока, который мы сейчас устанавливаем
         let currentLeftX = block.getX();
         let currentRightX = currentLeftX + block.getWidth() - 1;
         let currentLeftY = block.getY();
 
+        // уменьшаем длину текущего блока и добавляем в blocksInTower уже срезанный блок
         do reduceLastBlockWidth(block, prevLeftX, prevRightX, currentLeftX, currentRightX, currentLeftY);
+        
+        // удаляем не срезанный блок
         do block.erase();
         do block.dispose();
 
+        // отрисовываем срезанный блок
         let lastBlock = blocksInTower[index];
         do lastBlock.draw(); 
 
+        // если поставленный блок был последним в blocksInTower, то сдвигаем башню вниз, иначе - просто увеличиваем index на 1
         if (index < (thresholdCount - 1)){
             let index = index + 1;
         } else {
@@ -48,21 +57,27 @@ class Tower{
 
     method void reduceLastBlockWidth(Block block, int prevLeftX, int prevRightX, int currentLeftX, int currentRightX, int currentLeftY){
         var int newBlockWidth;
+
+        // проверяем, пересекается ли текущий блок с предыдущим, если нет, то его ширина становится 0 и игрок проигрывает
         if ((currentRightX < prevLeftX) | (currentLeftX > prevRightX)){
             let newBlockWidth = 0;
         }
 
+        // проверяем, пересек ли текущий блок предыдущий слева
         if (((currentLeftX < prevLeftX) | (currentLeftX = prevLeftX)) 
             & ((prevLeftX < currentRightX) | (prevLeftX = currentRightX))){
             let newBlockWidth = currentRightX - prevLeftX + 1;
             let blocksInTower[index] = Block.new(prevLeftX, currentLeftY, 0, newBlockWidth, block.getHeight());
         }
 
+        // проверяем, пересек ли текущий блок предыдущий справа
         if (((currentLeftX < prevRightX) | (currentLeftX = prevRightX)) 
             & ((prevRightX < currentRightX) | (prevRightX = currentRightX))){
             let newBlockWidth = prevRightX - currentLeftX + 1;
             let blocksInTower[index] = Block.new(currentLeftX, currentLeftY, 0, newBlockWidth, block.getHeight()); 
         }
+
+        // обновляем ширину для всех последующих блоков
         do TowerBuilder.updateWidth(newBlockWidth);
         return;
     }
@@ -77,6 +92,7 @@ class Tower{
             return;
         }
 
+        // сдвигаем башню вниз
         while(cnt < blockHeight){
             let j = 0;
             while(j < thresholdCount){
@@ -88,6 +104,7 @@ class Tower{
             let cnt = cnt + 1;        
         }
 
+        //удаляем самый первый блок в blocksInTower и сдвигаем все остальные на 1 позицию к началу массива
         let j = 0;
         let block = blocksInTower[0];
         do block.dispose();
