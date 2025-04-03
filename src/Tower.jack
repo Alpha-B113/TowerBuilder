@@ -1,5 +1,5 @@
 class Tower{
-    field Array blocksInTower; // количество блоков в башне
+    field Array blocksInTower; // массив блоков в башне
     field int thresholdCount; // максимальное возможное количество блоков башни на экране
     field int index; // индекс текущего блока
     
